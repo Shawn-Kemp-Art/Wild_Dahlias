@@ -75,7 +75,7 @@ $fx.params([
     id: "density",
     name: "Density",
     type: "number",
-    default: R.random_int(1, 8),
+    default: R.random_int(2, 8),
     options: {
       min: 1,
       max: 15,
