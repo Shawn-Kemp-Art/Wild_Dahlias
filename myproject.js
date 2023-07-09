@@ -16,8 +16,6 @@ console.log(tokenData.hash)
 
 canvas.style.background = "white";
 
-
-
 //Set a seed value for Perlin
 var seed = ~~(R.random_dec()*100000000000000000);
 
@@ -112,40 +110,48 @@ $fx.params([
   
 ])
 
-
+//read in query strings
+var qh = new URLSearchParams(window.location.search).get('h'); //high
+var qw = new URLSearchParams(window.location.search).get('w'); //wide
+var qs = new URLSearchParams(window.location.search).get('scale'); //scale
+var qfw = new URLSearchParams(window.location.search).get('framewidth'); //Framewidth
+var ql = new URLSearchParams(window.location.search).get('layers'); //layers
+var qpw  = new URLSearchParams(window.location.search).get('lw'); //read explode width query string
+var qph  = new URLSearchParams(window.location.search).get('lh'); //read explode height query string
+var qo = new URLSearchParams(window.location.search).get('orientation'); //change orientation
+var qm = new URLSearchParams(window.location.search).get('cutmarks'); //0 turns off cutmarks and hangers
 
 //Set the properties for the artwork where 100 = 1 inch
-
-
-
-var wide = 800; if($fx.getParam("aspect_ratio") == "2:5"){wide=400};if($fx.getParam("aspect_ratio") == "1:1"){wide=1000};var w = new URLSearchParams(window.location.search).get('w');if (w){wide=w*100};
-var high = 1000; var h = new URLSearchParams(window.location.search).get('h');if (h){high=h*100};
+var wide = 800; 
+    if($fx.getParam("aspect_ratio") == "2:5"){wide=400};
+    if($fx.getParam("aspect_ratio") == "1:1"){wide=1000};
+    if (qw){wide=qw*100};
+var high = 1000; 
+    if (qh){high=qh*100};
 
 var scale = 2; 
-var s = new URLSearchParams(window.location.search).get('scale'); //read scale query string
-if (s){scale=s};
+    if (qs){scale=qs};
 
 var ratio = 1/scale;//use 1/4 for 32x40 - 1/3 for 24x30 - 1/2 for 16x20 - 1/1 for 8x10
 
-
-
 var minOffset = ~~(6*ratio); //this is aproximatly .125"
 //var framewidth = ~~(50*scale*ratio); 
-var framewidth = 75; var fw = new URLSearchParams(window.location.search).get('fw');if (fw){framewidth=fw};
-//if (ratio<.5){framewidth = ~~(150*ratio); }//use 1.5" frame for larger 
+var framewidth = 75; 
+    if (qfw){framewidth=qfw};
+
 var framradius = 0;
 var stacks = R.random_int(8, 16);
-stacks = $fx.getParam("number_layers");
-layers = new URLSearchParams(window.location.search).get('layers');
-if (layers){stacks=parseInt(layers)};
+    stacks = $fx.getParam("number_layers"); 
+    if (ql){stacks=parseInt(ql)};
 console.log(stacks+" layers");
 
+// Set a canvas size for when layers are exploded where 100=1in
+var panelWide = 1600; if (qpw){panelWide=parseInt(qpw)};  
+var panelHigh = 2000; if (qph){panelHigh=parseInt(qph)}; 
+ 
+paper.view.viewSize.width = 2400;
+paper.view.viewSize.height = 2400;
 
-//read settings from query string
-var qx = new URLSearchParams(window.location.search).get('x'); //read width query string
-var qy = new URLSearchParams(window.location.search).get('y'); //read height query 
-var laserwide  = new URLSearchParams(window.location.search).get('lw'); //read height query string
-var laserhigh  = new URLSearchParams(window.location.search).get('lh'); //read height query string
 
 var colors = []; var palette = []; 
 var petalspiky = R.random_int(5, 15);
@@ -155,35 +161,41 @@ numofcolors = R.random_int(1, 6); //Sets the number of colors to pick for the pa
 numofcolors = $fx.getParam("number_colors"); 
 console.log(numofcolors+" colors");
 
-//Randomly adjust the canvas dimensions
+//djust the canvas dimensions
 w=wide;h=high;
-var orient = new URLSearchParams(window.location.search).get('orientation');
-
 if ($fx.getParam("orientation")=="Landscape"){wide = h;high = w;orientation="Landscape";}
 else if ($fx.getParam("orientation")=="Square"){wide = w;high = w;orientation="Square";}
 else {wide = w;high = h;orientation="Portrait";}
-
-if (orient=="w"){wide = h;high = w;orientation="Landscape";};
-if (orient=="s"){wide = w;high = w;orientation="Square";};
-if (orient=="t"){wide = w;high = h;orientation="Portrait";};
+if (qo=="w"){wide = h;high = w;orientation="Landscape";};
+if (qo=="s"){wide = w;high = w;orientation="Square";};
+if (qo=="t"){wide = w;high = h;orientation="Portrait";};
 console.log(orientation+': '+~~(wide/100/ratio)+' x '+~~(high/100/ratio))   
 
+
 //setup the project variables
-var numberofcircles=R.random_int(1, 7);console.log('flowers: '+numberofcircles);
-numberofcircles=$fx.getParam("number_ripples");
-var meshDensity = R.random_int(5, 15);console.log('meshDensity: '+meshDensity);
-meshDensity = $fx.getParam("density"); 
-var xwav = R.random_int(20, 40);console.log('xwav: '+xwav);//xwav = 20;
-var ywav = R.random_int(9, 23);console.log('ywav: '+ywav);//ywav = 17;
-var xoss = 1.10+R.random_dec()*.3;console.log('xoss: '+xoss);//xoss = 1.10
-var yoss = 1.05+R.random_dec()*.3;console.log('yoss: '+yoss);//yoss = 1.16
-var lspread = R.random_int(15, 65);console.log('lineSpread: '+lspread);
-var backgroundStyle = R.random_int(0, 6);console.log('backgroundstyle: '+backgroundStyle);
-backgroundStyle = $fx.getParam("background"); 
+var numberofcircles=R.random_int(1, 7);
+    numberofcircles=$fx.getParam("number_ripples");
+    console.log('flowers: '+numberofcircles);
+var meshDensity = R.random_int(5, 15);
+    meshDensity = $fx.getParam("density"); 
+    console.log('meshDensity: '+meshDensity);
+var xwav = R.random_int(20, 40);
+    console.log('xwav: '+xwav);//xwav = 20;
+var ywav = R.random_int(9, 23);
+    console.log('ywav: '+ywav);//ywav = 17;
+var xoss = 1.10+R.random_dec()*.3;
+    console.log('xoss: '+xoss);//xoss = 1.10
+var yoss = 1.05+R.random_dec()*.3;
+    console.log('yoss: '+yoss);//yoss = 1.16
+var lspread = R.random_int(15, 65);
+    console.log('lineSpread: '+lspread);
+var backgroundStyle = R.random_int(0, 6);
+    backgroundStyle = $fx.getParam("background");
+    console.log('backgroundstyle: '+backgroundStyle); 
 var raining = R.random_int(0, 10);
-if ($fx.getParam("rain") == "Yes"){var raining = 10};
-if ($fx.getParam("rain") == "No"){var raining = 0};
-console.log('rain: '+raining);
+    if ($fx.getParam("rain") == "Yes"){var raining = 10};
+    if ($fx.getParam("rain") == "No"){var raining = 0};
+    console.log('rain: '+raining);
 
 
 cc=[];cr=[];p=0;hoset=[];
@@ -203,33 +215,13 @@ for (var c=0; c<stacks; c=c+1){colors[c] = palette[R.random_int(0, palette.lengt
 //or alternate colors
 p=0;for (var c=0; c<stacks; c=c+1){colors[c] = palette[p];p=p+1;if(p==palette.length){p=0};}
 
-//force fraem to white
+//force frame to white
 colors[stacks-1]={"Hex":"#FFFFFF", "Name":"Smooth White"};
     
 //Set the line color
 linecolor={"Hex":"#292831","Name":"Black"};
 
-//read settings from query string
-var qx  = new URLSearchParams(window.location.search).get('x'); //read width query string
-var qy  = new URLSearchParams(window.location.search).get('y'); //read height query 
-var laserwide  = new URLSearchParams(window.location.search).get('lw'); //read height query string
-var laserhigh  = new URLSearchParams(window.location.search).get('lh'); //read height query string
-var screwHoles = new URLSearchParams(window.location.search).get('screws');//if == true draw chicago screw holes
 
-//Override canvas sizes based on query strings  
-if (qx){wide=parseInt(qx)};   
-if (qy){high=parseInt(qy)}; 
-
-
-// Set a canvas size for when layers are exploded where 100=1in
-var panelWide = 3000;
-var panelHigh = 2400;
-//Override explode canvas sizes based on query strings  
-if (laserhigh){panelHigh=parseInt(laserhigh)};  
-if (laserwide){panelWide=parseInt(laserwide)};  
-
-paper.view.viewSize.width = 2400;
-paper.view.viewSize.height = 2400;
 
 
 //************* Draw the layers ************* 
@@ -258,7 +250,9 @@ for (z = 0; z < stacks; z++) {
         petalPortal(z,petalspiky)
     }  
         
-    frameIt(z);cutMarks(z);hanger(z);// finish the layer with a final frame cleanup and cut marks
+    frameIt(z);// finish the layer with a final frame cleanup 
+
+    if (qm != 0){cutMarks(z);hanger(z)};// add cut marks and hanger holes
     if (z == stacks-1) {signature(z);}// sign the top layer
     sheet[z].scale(2.3);
     sheet[z].position = new Point(1200, 1200);
@@ -291,8 +285,7 @@ for (z = 0; z < stacks; z++) {
 
 
 //vvvvvvvvvvvvvvv PROJECT FUNCTIONS vvvvvvvvvvvvvvv 
-function holePortal(z){
-    
+function holePortal(z){   
     for (p=0;p<numberofcircles;p++){
         var pp=pp+prange;   
         var ocircle = new Path.Circle(cc[p], cr[p]);
@@ -306,6 +299,7 @@ function holePortal(z){
         project.activeLayer.children[project.activeLayer.children.length-2].remove();
     }
 }
+
 
 function petalPortal(z,curv){
     for (p=0;p<numberofcircles;p++){
@@ -361,6 +355,7 @@ function horzLines(z,ls,shake) {
     }
 }
 
+
 function vertLines(z,ls,shake) {
     //z is the layer to render it to
     //ls is the number of lines to draw
@@ -381,6 +376,7 @@ function vertLines(z,ls,shake) {
         mesh.remove();
     }
 }
+
 
 function hexGrid(z,across){
     //z is the layer to render it to
@@ -405,6 +401,7 @@ function hexGrid(z,across){
         r++
     }
 }
+
 
 function ringGrid(z,across){
     var radius = ~~(wide/(Math.sqrt(3)*across));
@@ -450,6 +447,7 @@ function diamondGrid(z,across){
     }
 }
 
+
 function triGrid(z,across){
     radius = ~~(wide/(across));
     oset = ~~((radius*Math.cos(0.523599))/stacks-1);
@@ -469,6 +467,7 @@ function triGrid(z,across){
         r++
     }
 }
+
 
 function horzWaveLines(z,ls,xinit,yinit,xamp,yamp) {
     shift = ~~(high/(ls+1));
@@ -506,14 +505,14 @@ function rangeInt(range,x,y,z){
     return (v);
 }
 
-// Add a shape s to sheet z
+// Add shape s to sheet z
 function join(z,s){
     sheet[z] = (s.unite(sheet[z]));
     s.remove();
     project.activeLayer.children[project.activeLayer.children.length-2].remove();
 }
 
-// Subtract a shape s from sheet z
+// Subtract shape s from sheet z
 function cut(z,s){
     sheet[z] = sheet[z].subtract(s);
     s.remove();
@@ -552,8 +551,7 @@ function frameIt(z){
         sheet[z] = sheet[z].unite(frame);
         frame.remove();
         project.activeLayer.children[project.activeLayer.children.length-2].remove();
-        // Add some holes to secure it together
-        if (screwHoles=='true'){chicagoScrews(z);}    
+         
         
         sheet[z].style = {fillColor: colors[z].Hex, strokeColor: linecolor.Hex, strokeWidth: 1*ratio,shadowColor: new Color(0,0,0,[0.3]),shadowBlur: 20,shadowOffset: new Point((stacks-z)*2.3, (stacks-z)*2.3)};
 }
