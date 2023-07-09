@@ -131,7 +131,7 @@ var ratio = 1/scale;//use 1/4 for 32x40 - 1/3 for 24x30 - 1/2 for 16x20 - 1/1 fo
 
 var minOffset = ~~(6*ratio); //this is aproximatly .125"
 //var framewidth = ~~(50*scale*ratio); 
-var framewidth = 75; 
+var framewidth = 75; var fw = new URLSearchParams(window.location.search).get('fw');if (fw){framewidth=fw};
 //if (ratio<.5){framewidth = ~~(150*ratio); }//use 1.5" frame for larger 
 var framradius = 0;
 var stacks = R.random_int(8, 16);
