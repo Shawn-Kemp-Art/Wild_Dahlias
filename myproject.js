@@ -120,6 +120,8 @@ var qpw  = new URLSearchParams(window.location.search).get('lw'); //read explode
 var qph  = new URLSearchParams(window.location.search).get('lh'); //read explode height query string
 var qo = new URLSearchParams(window.location.search).get('orientation'); //change orientation
 var qm = new URLSearchParams(window.location.search).get('cutmarks'); //0 turns off cutmarks and hangers
+var qc = new URLSearchParams(window.location.search).get('colors'); // number of colors
+var qb = new URLSearchParams(window.location.search).get('pattern');// background style
 
 //Set the properties for the artwork where 100 = 1 inch
 var wide = 800; 
@@ -158,7 +160,8 @@ var petalspiky = R.random_int(5, 15);
 
 
 numofcolors = R.random_int(1, 6); //Sets the number of colors to pick for the pallete
-numofcolors = $fx.getParam("number_colors"); 
+numofcolors = $fx.getParam("number_colors");
+if (qc){numofcolors = qc};
 console.log(numofcolors+" colors");
 
 //djust the canvas dimensions
@@ -191,6 +194,7 @@ var lspread = R.random_int(15, 65);
     console.log('lineSpread: '+lspread);
 var backgroundStyle = R.random_int(0, 6);
     backgroundStyle = $fx.getParam("background");
+    if (qb){backgroundStyle=qb};
     console.log('backgroundstyle: '+backgroundStyle); 
 var raining = R.random_int(0, 10);
     if ($fx.getParam("rain") == "Yes"){var raining = 10};
