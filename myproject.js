@@ -122,6 +122,7 @@ var qo = new URLSearchParams(window.location.search).get('orientation'); //chang
 var qm = new URLSearchParams(window.location.search).get('cutmarks'); //0 turns off cutmarks and hangers
 var qc = new URLSearchParams(window.location.search).get('colors'); // number of colors
 var qb = new URLSearchParams(window.location.search).get('pattern');// background style
+var qf = new URLSearchParams(window.location.search).get('flowers');// Number of dahlias
 
 //Set the properties for the artwork where 100 = 1 inch
 var wide = 800; 
@@ -178,6 +179,7 @@ console.log(orientation+': '+~~(wide/100/ratio)+' x '+~~(high/100/ratio))
 //setup the project variables
 var numberofcircles=R.random_int(1, 7);
     numberofcircles=$fx.getParam("number_ripples");
+    if (qf){numberofcircles=qf};
     console.log('flowers: '+numberofcircles);
 var meshDensity = R.random_int(5, 15);
     meshDensity = $fx.getParam("density"); 
