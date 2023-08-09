@@ -1,11 +1,12 @@
 
-document.body.innerHTML = '<style>div{color: grey;font-family:cursive;text-align:center;position:absolute;margin:auto;top:0;right:0;bottom:0;left:0;width:300px;height:100px;}</style><body><div id="loading"><h1>GENERATING</h1><p>This could take a while, please give it at least 5 minutes to render.</p><br><h3><strong>Press H or ? for help</strong></h3></div></body>';
+document.body.innerHTML = '<style>div{color: grey;text-align:center;position:absolute;margin:auto;top:0;right:0;bottom:0;left:0;width:500px;height:100px;}</style><body><div id="loading"><h1>WILD DAHLIAS</h1><p>This could take a while, please give it at least 5 minutes to render.</p><br><h1 class="spin">⏳</h1><br><h3>Press <strong>?</strong> for shortcut keys</h3><br><p><small>Output contains an embedded blueprint for creating an IRL wall sculpture</small></p></div></body>';
 paper.install(window);
 window.onload = function() {
 
 document.body.innerHTML = '<style>body {margin: 0px;text-align: center;}</style><canvas resize="true" style="display:block;width:100%;" id="myCanvas"></canvas>';
 
 setquery("fxhash",fxhash);
+var initialTime = new Date().getTime();
 
 var canvas = document.getElementById("myCanvas");
 
@@ -13,60 +14,38 @@ paper.setup('myCanvas');
 paper.activate();
 
 console.log(tokenData.hash)
+console.log($fx.iteration)
 
 canvas.style.background = "white";
 
 //Set a seed value for Perlin
-var seed = ~~(R.random_dec()*100000000000000000);
-
+var seed = Math.floor($fx.rand()*10000000000000000);
+console.log(seed)
 //initialize perlin noise 
 var noise = new perlinNoise3d();
 noise.noiseSeed(seed);
 
+/*
 //fxparams
 $fx.params([
   {
     id: "number_ripples",
     name: "Dahlias",
     type: "number",
-    default: R.random_int(1, 6),
+    default: R.random_int(1, 2),
     options: {
       min: 0,
-      max: 12,
+      max: 5,
       step: 1,
     },
   },
   {
-    id: "number_colors",
-    name: "Colors",
-    type: "number",
-    default: R.random_int(2, 6),
+    id: "Style",
+    name: "Style",
+    type: "select",
+    default: "Vertical Lines",
     options: {
-      min: 1,
-      max: 12,
-      step: 1,
-    },
-  },
-  {
-    id: "number_layers",
-    name: "Layers",
-    type: "number",
-    default: 12,
-    options: {
-      min: 8,
-      max: 16,
-      step: 1,
-    },
-  },
-  {
-    id: "background",
-    name: "Background style",
-    type: "number",
-    default: R.random_int(0, 6),
-    options: {
-      min: 0,
-      max: 6,
-      step: 1,
+      options: ["Vertical Lines", "Horizontal Lines", "Hex", "Rings", "Diamonds", "Triangles", "Waves"],
     },
   },
   {
@@ -80,35 +59,13 @@ $fx.params([
       step: 1,
     },
   },
-  {
-    id: "rain",
-    name: "Raining",
-    type: "select",
-    default: "Random",
-    options: {
-      options: ["Random", "Yes", "No"],
-    },
-  },
-  {
-    id: "orientation",
-    name: "Orientation",
-    type: "select",
-    default: "Portrait",
-    options: {
-      options: ["Portrait", "Landscape"],
-    }
-  },
-   {
-    id: "aspect_ratio",
-    name: "Aspect Ratio",
-    type: "select",
-    default: "4:5",
-    options: {
-      options: ["4:5", "2:5", "1:1"],
-    }
-  },
   
 ])
+*/
+
+
+
+
 
 //read in query strings
 var qh = new URLSearchParams(window.location.search).get('h'); //high
@@ -119,15 +76,21 @@ var ql = new URLSearchParams(window.location.search).get('layers'); //layers
 var qpw  = new URLSearchParams(window.location.search).get('lw'); //read explode width query string
 var qph  = new URLSearchParams(window.location.search).get('lh'); //read explode height query string
 var qo = new URLSearchParams(window.location.search).get('orientation'); //change orientation
-var qm = new URLSearchParams(window.location.search).get('cutmarks'); //0 turns off cutmarks and hangers
+var qm = new URLSearchParams(window.location.search).get('cutmarks'); //any value turns on cutmarks and hangers
 var qc = new URLSearchParams(window.location.search).get('colors'); // number of colors
 var qb = new URLSearchParams(window.location.search).get('pattern');// background style
 var qf = new URLSearchParams(window.location.search).get('flowers');// Number of dahlias
+var testingGo = new URLSearchParams(window.location.search).get('testing');// Run generative tests
+
+var frC = R.random_int(1, 3); //random frame color white, mocha, or rainbow
+var orient=R.random_int(1, 4); // decide on orientation 
+var halfsize = R.random_int(1, 5);
 
 //Set the properties for the artwork where 100 = 1 inch
 var wide = 800; 
-    if($fx.getParam("aspect_ratio") == "2:5"){wide=400};
-    if($fx.getParam("aspect_ratio") == "1:1"){wide=1000};
+if (halfsize == 1 && orient != 2){wide=400;}
+    //if($fx.getParam("aspect_ratio") == "2:5"){wide=400};
+    //if($fx.getParam("aspect_ratio") == "1:1"){wide=1000};
     if (qw){wide=qw*100};
 var high = 1000; 
     if (qh){high=qh*100};
@@ -137,14 +100,14 @@ var scale = 2;
 
 var ratio = 1/scale;//use 1/4 for 32x40 - 1/3 for 24x30 - 1/2 for 16x20 - 1/1 for 8x10
 
-var minOffset = ~~(6*ratio); //this is aproximatly .125"
-//var framewidth = ~~(50*scale*ratio); 
-var framewidth = 75; 
+var minOffset = ~~(7*ratio); //this is aproximatly .125"
+var framewidth = ~~(25*scale); 
+//var framewidth = 50; 
     if (qfw){framewidth=qfw};
 
 var framradius = 0;
-var stacks = R.random_int(8, 16);
-    stacks = $fx.getParam("number_layers"); 
+var stacks = 12;
+    //stacks = $fx.getParam("number_layers"); 
     if (ql){stacks=parseInt(ql)};
 console.log(stacks+" layers");
 
@@ -160,16 +123,21 @@ var colors = []; var palette = [];
 var petalspiky = R.random_int(5, 15);
 
 
-numofcolors = R.random_int(1, 6); //Sets the number of colors to pick for the pallete
-numofcolors = $fx.getParam("number_colors");
+numofcolors = R.random_int(1, 6);; //Sets the number of colors to pick for the pallete
+//numofcolors = $fx.getParam("number_colors");
 if (qc){numofcolors = qc};
 console.log(numofcolors+" colors");
 
-//djust the canvas dimensions
+//adjust the canvas dimensions
 w=wide;h=high;
-if ($fx.getParam("orientation")=="Landscape"){wide = h;high = w;orientation="Landscape";}
-else if ($fx.getParam("orientation")=="Square"){wide = w;high = w;orientation="Square";}
-else {wide = w;high = h;orientation="Portrait";}
+//if ($fx.getParam("orientation")=="Landscape"){wide = h;high = w;orientation="Landscape";}
+//else if ($fx.getParam("orientation")=="Square"){wide = w;high = w;orientation="Square";}
+var orientation="Portrait";
+
+if (orient==1){wide = h;high = w;orientation="Landscape";};
+if (orient==2){wide = w;high = w;orientation="Square";};
+if (orient==3){wide = w;high = h;orientation="Portrait";};
+
 if (qo=="w"){wide = h;high = w;orientation="Landscape";};
 if (qo=="s"){wide = w;high = w;orientation="Square";};
 if (qo=="t"){wide = w;high = h;orientation="Portrait";};
@@ -177,38 +145,46 @@ console.log(orientation+': '+~~(wide/100/ratio)+' x '+~~(high/100/ratio))
 
 
 //setup the project variables
-var numberofcircles=R.random_int(1, 7);
-    numberofcircles=$fx.getParam("number_ripples");
+var numberofcircles=R.random_int(1, 9);//numberofcircles=5;
+    //numberofcircles=$fx.getParam("number_ripples");
     if (qf){numberofcircles=qf};
     console.log('flowers: '+numberofcircles);
-var meshDensity = R.random_int(5, 15);
-    meshDensity = $fx.getParam("density"); 
+var meshDensity = R.random_int(5, 15);//meshDensity =15;
+    //meshDensity = $fx.getParam("density"); 
     console.log('meshDensity: '+meshDensity);
 var xwav = R.random_int(20, 40);
-    console.log('xwav: '+xwav);//xwav = 20;
+    console.log('xwav: '+xwav);//xwav = 40;
 var ywav = R.random_int(9, 23);
-    console.log('ywav: '+ywav);//ywav = 17;
+    console.log('ywav: '+ywav);//ywav = 23;
 var xoss = 1.10+R.random_dec()*.3;
     console.log('xoss: '+xoss);//xoss = 1.10
 var yoss = 1.05+R.random_dec()*.3;
     console.log('yoss: '+yoss);//yoss = 1.16
 var lspread = R.random_int(15, 65);
     console.log('lineSpread: '+lspread);
-var backgroundStyle = R.random_int(0, 6);
-    backgroundStyle = $fx.getParam("background");
+var backgroundStyle = R.random_int(0, 6);//backgroundStyle =6;
+    //backgroundStyle = $fx.getParam("background");
+        /*if ($fx.getParam("Style") == "Vertical Lines"){backgroundStyle = 0};
+        if ($fx.getParam("Style") == "Horizontal Lines"){backgroundStyle = 1};
+        if ($fx.getParam("Style") == "Hex"){backgroundStyle = 2};
+        if ($fx.getParam("Style") == "Rings"){backgroundStyle = 3};
+        if ($fx.getParam("Style") == "Diamonds"){backgroundStyle = 4};
+        if ($fx.getParam("Style") == "Triangles"){backgroundStyle = 5};
+        if ($fx.getParam("Style") == "Waves"){backgroundStyle = 6};
+    */
     if (qb){backgroundStyle=qb};
     console.log('backgroundstyle: '+backgroundStyle); 
 var raining = R.random_int(0, 10);
-    if ($fx.getParam("rain") == "Yes"){var raining = 10};
-    if ($fx.getParam("rain") == "No"){var raining = 0};
+    //if ($fx.getParam("rain") == "Yes"){var raining = 10};
+    //if ($fx.getParam("rain") == "No"){var raining = 0};
     console.log('rain: '+raining);
 
 
 cc=[];cr=[];p=0;hoset=[];
-rt = (wide+high)/4
+rt = (wide+high)/3
 for (i=0;i<=numberofcircles;i++){
     cc[i]=new Point(~~(R.random_dec()*wide),~~(R.random_dec()*high));
-    cr[i]=~~(rt/6+R.random_dec()*rt/2);
+    cr[i]=~~(rt/6+R.random_dec()*rt/2)-1;
     hoset[i] =  R.random_int(10, 40)*ratio;
 }
 
@@ -221,11 +197,13 @@ for (var c=0; c<stacks; c=c+1){colors[c] = palette[R.random_int(0, palette.lengt
 //or alternate colors
 p=0;for (var c=0; c<stacks; c=c+1){colors[c] = palette[p];p=p+1;if(p==palette.length){p=0};}
 
-//force frame to white
-colors[stacks-1]={"Hex":"#FFFFFF", "Name":"Smooth White"};
+//Pick frame color
+
+if (frC==1){colors[stacks-1]={"Hex":"#FFFFFF", "Name":"Smooth White"}};
+if (frC==2){colors[stacks-1]={"Hex":"#4C4638", "Name":"Mocha"}};
     
 //Set the line color
-linecolor={"Hex":"#292831","Name":"Black"};
+linecolor={"Hex":"#4C4638", "Name":"Mocha"};
 
 
 
@@ -258,10 +236,10 @@ for (z = 0; z < stacks; z++) {
         
     frameIt(z);// finish the layer with a final frame cleanup 
 
-    if (qm != 0){cutMarks(z);hanger(z)};// add cut marks and hanger holes
+    cutMarks(z);hanger(z);// add cut marks and hanger holes
     if (z == stacks-1) {signature(z);}// sign the top layer
     sheet[z].scale(2.3);
-    sheet[z].position = new Point(1200, 1200);
+    sheet[z].position = new Point(paper.view.viewSize.width/2, paper.view.viewSize.height/2);
     var group = new Group(sheet[z]);
     
     console.log(z)//Show layer completed in console
@@ -277,35 +255,35 @@ for (z = 0; z < stacks; z++) {
 
     // Build the features and trigger an fxhash preview
     var features = {};
+    features.Size =  ~~(wide/100/ratio)+" x "+~~(high/100/ratio)+" inches";
+    features.Orientation = orientation;
     features.Dahlias = numberofcircles;
     features.Background = backgrounds;
-    features.Orientation = orientation;
-    features.Aspect = $fx.getParam("aspect_ratio");
     for (l=stacks;l>0;l--){
     var key = "layer: "+(stacks-l+1)
     features[key] = colors[l-1].Name
     }
     console.log(features);
     $fx.features(features);
-    //fxpreview();
+    //$fx.preview();
+
+    var finalTime = new Date().getTime();
+    var renderTime = (finalTime - initialTime)/1000
+    console.log ('this took : ' +  renderTime.toFixed(2) + ' seconds' );
+
+
+        if (testingGo == 'true'){refreshit();}
+
+        async function refreshit() {
+        //setquery("fxhash",null);
+        await new Promise(resolve => setTimeout(resolve, 5000)); // 3 sec
+        canvas.toBlob(function(blob) {saveAs(blob, tokenData.hash+' - '+renderTime.toFixed(0)+'secs.png');});
+        await new Promise(resolve => setTimeout(resolve, 5000)); // 3 sec
+        window.open('file:///Users/shawnkemp/dev/Wild%20Dahlias%20v2/index.html?testing=true', '_blank');
+        }
 
 
 //vvvvvvvvvvvvvvv PROJECT FUNCTIONS vvvvvvvvvvvvvvv 
-function holePortal(z){   
-    for (p=0;p<numberofcircles;p++){
-        var pp=pp+prange;   
-        var ocircle = new Path.Circle(cc[p], cr[p]);
-        var icircle = new Path.Circle(cc[p], cr[p]-~~((stacks-z-1)*hoset[p]));
-        sheet[z] = sheet[z].subtract(icircle);
-        project.activeLayer.children[project.activeLayer.children.length-1].remove();
-        c = ocircle.subtract(icircle);
-        ocircle.remove();icircle.remove();
-        sheet[z] = c.unite(sheet[z]);
-        c.remove();  
-        project.activeLayer.children[project.activeLayer.children.length-2].remove();
-    }
-}
-
 
 function petalPortal(z,curv){
     for (p=0;p<numberofcircles;p++){
@@ -326,7 +304,7 @@ function petalPortal(z,curv){
                 var pr=pr+prange;
                 spike = new Path.Ellipse({
                 center: [cc[p].x+cr[p], cc[p].y],
-                radius: [(cr[p]/(stacks+4))*(stacks-z-1), ~~(cr[p]/curv)],});
+                radius: [~~((cr[p]/(stacks+4))*(stacks-z-1)), ~~(cr[p]/curv)],});
                 var offset = new Path.Circle(cc[p], cr[p]);
                 spire = spike.intersect(offset);
                 spike.remove();offset.remove();
@@ -340,7 +318,6 @@ function petalPortal(z,curv){
         } 
     }
 }
-
 
 
 function horzLines(z,ls,shake) {
@@ -600,7 +577,7 @@ function hanger (z){
 
 
 //--------- Interaction functions -----------------------
-var interactiontext = "Interactions\n1 = 8x10\n2 = 16x20\n3 = 24x30\n4 = 32x40\nW = Wide\nT = Tall\nS = Square\nB = Blueprint mode\nV = Export SVG\nP = Export PNG\nL = Number of layers\nC = Export colors as TXT\nE = Show layers\nSPACEBAR = New design"
+var interactiontext = "Interactions\nB = Blueprint mode\nV = Export SVG\nP = Export PNG\nC = Export colors as TXT\nE = Show layers\n"
 
 view.onDoubleClick = function(event) {
     console.log("png")
@@ -646,6 +623,9 @@ document.addEventListener('keypress', (event) => {
         //scale
        if(event.key == "1" || event.key =="2" ||event.key =="3" || event.key =="4") {
             setquery("scale",event.key);
+            setquery("w",5.6);
+            setquery("h",7);
+            setquery("cutmarks",1);
             location.reload();
             }
 
