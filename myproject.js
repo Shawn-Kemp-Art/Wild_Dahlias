@@ -101,7 +101,7 @@ var scale = 2;
 var ratio = 1/scale;//use 1/4 for 32x40 - 1/3 for 24x30 - 1/2 for 16x20 - 1/1 for 8x10
 
 var minOffset = ~~(7*ratio); //this is aproximatly .125"
-var framewidth = ~~(25*scale); 
+var framewidth = ~~(R.random_int(25, 50)*scale); 
 //var framewidth = 50; 
     if (qfw){framewidth=qfw};
 
