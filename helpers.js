@@ -25,7 +25,9 @@ function setquery(p,v){
 
  function upspirestudio(features) {
         if (features == null){features={};}
-        console.log(window.location.pathname);
+      
+        var genurl = window.location.pathname;
+        console.log(genurl);
         var canvas = document.getElementById("myCanvas"); 
         var pngimg = canvas.toDataURL('image/png').replace(/^.+,/, '');
         canvas.toBlob(function(blob) {
@@ -42,7 +44,7 @@ function setquery(p,v){
         xhr.open("POST", url);
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.onreadystatechange = function () {if (xhr.readyState === 4) {console.log(xhr.status);console.log(xhr.responseText);}};
-        var data64 = '{"attributes":"'+attr+'","hash":"'+fxhash+'","img":{"filename":"'+ filename+'", "contents":"'+base64file+'"}}';
+        var data64 = '{"attributes":"'+attr+'","url":"'+genurl+'","hash":"'+fxhash+'","img":{"filename":"'+ filename+'", "contents":"'+base64file+'"}}';
         xhr.send(data64); 
         });    
     };
