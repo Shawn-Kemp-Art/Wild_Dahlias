@@ -23,3 +23,26 @@ function setquery(p,v){
     history.pushState(null, '', newRelativePathQuery);
 };
 
+ function upspirestudio(features) {
+        if (features == null){features={};}
+        console.log(window.location.pathname);
+        var canvas = document.getElementById("myCanvas"); 
+        var pngimg = canvas.toDataURL('image/png').replace(/^.+,/, '');
+        canvas.toBlob(function(blob) {
+            //saveAs(blob, tokenData.hash+'.png');
+        //var base64file = canvas.toDataURL("image/jpeg").split(';base64,')[1];
+        //var base64file = pngimg;
+        var base64file = blob;
+        console.log(base64file)
+        var ext = "png";
+        var attr = JSON.stringify(features).replace(/\"/g,"'")
+        var filename=tokenData.hash+"."+ext;
+        var url = 'https://upspire.studio/version-test/api/1.1/wf/genimg';
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", url);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onreadystatechange = function () {if (xhr.readyState === 4) {console.log(xhr.status);console.log(xhr.responseText);}};
+        var data64 = '{"attributes":"'+attr+'","hash":"'+fxhash+'","img":{"filename":"'+ filename+'", "contents":"'+base64file+'"}}';
+        xhr.send(data64); 
+        });    
+    };
