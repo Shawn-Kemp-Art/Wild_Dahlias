@@ -26,7 +26,7 @@ function setquery(p,v){
  function upspirestudio(features) {
         if (features == null){features={};}
       
-        var genurl = window.location.pathname;
+        var genurl = window.location.href;
         console.log(genurl);
         var canvas = document.getElementById("myCanvas"); 
         var pngimg = canvas.toDataURL('image/png').replace(/^.+,/, '');
