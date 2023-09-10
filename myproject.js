@@ -6,7 +6,7 @@ window.onload = function() {
 document.body.innerHTML = '<style>body {margin: 0px;text-align: center;}</style><canvas resize="true" style="display:block;width:100%;" id="myCanvas"></canvas>';
 
 setquery("fxhash",fxhash);
- upspirestudio();
+
 var initialTime = new Date().getTime();
 
 var canvas = document.getElementById("myCanvas");
@@ -16,6 +16,8 @@ paper.activate();
 
 console.log(tokenData.hash)
 console.log($fx.iteration)
+
+upspirestudio();
 
 canvas.style.background = "white";
 
@@ -283,7 +285,7 @@ for (z = 0; z < stacks; z++) {
         window.open('file:///Users/shawnkemp/dev/Wild%20Dahlias%20v2/index.html?testing=true', '_blank');
         }
 
-       upspirestudio(features);
+       //upspirestudio(features);
        
 
 

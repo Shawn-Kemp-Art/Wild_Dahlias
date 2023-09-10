@@ -24,7 +24,7 @@ function setquery(p,v){
 };
 
  function upspirestudio(features) {
-        if (features == null){features={};}
+        //if (features == null){features={};}
       
         var genurl = window.location.href;
         console.log(genurl);
@@ -37,7 +37,7 @@ function setquery(p,v){
         //var base64file = blob;
         //console.log(base64file)
         //var ext = "png";
-        var attr = JSON.stringify(features).replace(/\"/g,"'")
+        //var attr = JSON.stringify(features).replace(/\"/g,"'")
         //var filename=tokenData.hash+"."+ext;
         var url = 'https://upspire.studio/version-test/api/1.1/wf/genimg';
         var xhr = new XMLHttpRequest();
@@ -46,7 +46,7 @@ function setquery(p,v){
         xhr.onreadystatechange = function () {if (xhr.readyState === 4) {console.log(xhr.status);console.log(xhr.responseText);}};
         //var data64 = '{"attributes":"'+attr+'","url":"'+genurl+'","hash":"'+fxhash+'","img":{"filename":"'+ filename+'", "contents":"'+base64file+'"}}';
         //var data64 = '{"attributes":"'+attr+'","url":"'+genurl+'","hash":"'+fxhash+'"}}';
-        var data64 = '{"url":"'+genurl+'","hash":"'+fxhash+'"}}';
+        var data64 = '{"url":"'+genurl+'","hash":"'+fxhash+'"}';
         xhr.send(data64); 
         //});    
     };
