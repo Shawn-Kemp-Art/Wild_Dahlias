@@ -45,7 +45,8 @@ function setquery(p,v){
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.onreadystatechange = function () {if (xhr.readyState === 4) {console.log(xhr.status);console.log(xhr.responseText);}};
         //var data64 = '{"attributes":"'+attr+'","url":"'+genurl+'","hash":"'+fxhash+'","img":{"filename":"'+ filename+'", "contents":"'+base64file+'"}}';
-        var data64 = '{"attributes":"'+attr+'","url":"'+genurl+'","hash":"'+fxhash+'"}}';
+        //var data64 = '{"attributes":"'+attr+'","url":"'+genurl+'","hash":"'+fxhash+'"}}';
+        var data64 = '{"url":"'+genurl+'","hash":"'+fxhash+'"}}';
         xhr.send(data64); 
         //});    
     };
