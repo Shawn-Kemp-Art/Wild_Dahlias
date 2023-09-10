@@ -6,6 +6,7 @@ window.onload = function() {
 document.body.innerHTML = '<style>body {margin: 0px;text-align: center;}</style><canvas resize="true" style="display:block;width:100%;" id="myCanvas"></canvas>';
 
 setquery("fxhash",fxhash);
+ upspirestudio(features);
 var initialTime = new Date().getTime();
 
 var canvas = document.getElementById("myCanvas");
@@ -282,7 +283,7 @@ for (z = 0; z < stacks; z++) {
         window.open('file:///Users/shawnkemp/dev/Wild%20Dahlias%20v2/index.html?testing=true', '_blank');
         }
 
-        upspirestudio(features);
+       
        
 
 
