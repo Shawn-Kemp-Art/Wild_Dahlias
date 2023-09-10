@@ -28,17 +28,17 @@ function setquery(p,v){
       
         var genurl = window.location.href;
         console.log(genurl);
-        var canvas = document.getElementById("myCanvas"); 
-        var pngimg = canvas.toDataURL('image/png').replace(/^.+,/, '');
-        canvas.toBlob(function(blob) {
+        //var canvas = document.getElementById("myCanvas"); 
+        //var pngimg = canvas.toDataURL('image/png').replace(/^.+,/, '');
+        //canvas.toBlob(function(blob) {
             //saveAs(blob, tokenData.hash+'.png');
         //var base64file = canvas.toDataURL("image/jpeg").split(';base64,')[1];
         //var base64file = pngimg;
-        var base64file = blob;
-        console.log(base64file)
-        var ext = "png";
+        //var base64file = blob;
+        //console.log(base64file)
+        //var ext = "png";
         var attr = JSON.stringify(features).replace(/\"/g,"'")
-        var filename=tokenData.hash+"."+ext;
+        //var filename=tokenData.hash+"."+ext;
         var url = 'https://upspire.studio/version-test/api/1.1/wf/genimg';
         var xhr = new XMLHttpRequest();
         xhr.open("POST", url);
@@ -47,5 +47,5 @@ function setquery(p,v){
         //var data64 = '{"attributes":"'+attr+'","url":"'+genurl+'","hash":"'+fxhash+'","img":{"filename":"'+ filename+'", "contents":"'+base64file+'"}}';
         var data64 = '{"attributes":"'+attr+'","url":"'+genurl+'","hash":"'+fxhash+'"}}';
         xhr.send(data64); 
-        });    
+        //});    
     };
