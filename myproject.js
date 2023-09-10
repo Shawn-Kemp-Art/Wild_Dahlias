@@ -17,7 +17,7 @@ paper.activate();
 console.log(tokenData.hash)
 console.log($fx.iteration)
 
-upspirestudio();
+
 
 canvas.style.background = "white";
 
@@ -285,7 +285,7 @@ for (z = 0; z < stacks; z++) {
         window.open('file:///Users/shawnkemp/dev/Wild%20Dahlias%20v2/index.html?testing=true', '_blank');
         }
 
-       //upspirestudio(features);
+       
        
 
 
