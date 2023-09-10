@@ -6,7 +6,7 @@ window.onload = function() {
 document.body.innerHTML = '<style>body {margin: 0px;text-align: center;}</style><canvas resize="true" style="display:block;width:100%;" id="myCanvas"></canvas>';
 
 setquery("fxhash",fxhash);
- upspirestudio(features);
+ upspirestudio();
 var initialTime = new Date().getTime();
 
 var canvas = document.getElementById("myCanvas");
