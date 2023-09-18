@@ -269,6 +269,8 @@ for (z = 0; z < stacks; z++) {
     console.log(features);
     $fx.features(features);
     //$fx.preview();
+
+    //Add a finished creating preview selector
     var iDiv = document.createElement('div');
     iDiv.id = 'render';
     document.body.appendChild(iDiv);
