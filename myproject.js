@@ -269,6 +269,9 @@ for (z = 0; z < stacks; z++) {
     console.log(features);
     $fx.features(features);
     //$fx.preview();
+    var iDiv = document.createElement('div');
+    iDiv.id = 'render';
+    document.body.appendChild(iDiv);
 
     var finalTime = new Date().getTime();
     var renderTime = (finalTime - initialTime)/1000
