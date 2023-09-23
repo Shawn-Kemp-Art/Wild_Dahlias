@@ -259,6 +259,9 @@ for (z = 0; z < stacks; z++) {
     // Build the features and trigger an fxhash preview
     var features = {};
     features.Size =  ~~(wide/100/ratio)+" x "+~~(high/100/ratio)+" inches";
+    features.Width = ~~(wide/100/ratio);
+    features.Height = ~~(high/100/ratio);
+    features.Depth = stacks;
     features.Orientation = orientation;
     features.Dahlias = numberofcircles;
     features.Background = backgrounds;
