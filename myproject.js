@@ -275,6 +275,9 @@ for (z = 0; z < stacks; z++) {
     iDiv.id = 'render';
     document.body.appendChild(iDiv);
 
+    //send features to upspire.studio
+    upspirestudio(features)
+
     var finalTime = new Date().getTime();
     var renderTime = (finalTime - initialTime)/1000
     console.log ('this took : ' +  renderTime.toFixed(2) + ' seconds' );

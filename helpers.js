@@ -39,7 +39,7 @@ function setquery(p,v){
         //var ext = "png";
         var attr = JSON.stringify(features).replace(/\"/g,"'")
         //var filename=tokenData.hash+"."+ext;
-        var url = 'https://upspire.studio/version-test/api/1.1/wf/genimg';
+        var url = 'https://upspirestudio.bubbleapps.io/version-test/api/1.1/wf/update-features';
         var xhr = new XMLHttpRequest();
         xhr.open("POST", url);
         xhr.setRequestHeader("Content-Type", "application/json");
