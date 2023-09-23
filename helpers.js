@@ -24,29 +24,19 @@ function setquery(p,v){
 };
 
  function upspirestudio(features) {
+        //Add a finished creating preview selector
+        var iDiv = document.createElement('div');
+        iDiv.id = 'render';
+        document.body.appendChild(iDiv);
+
         if (features == null){features={};}
-      
         var genurl = window.location.href;
-        console.log(genurl);
-        //var canvas = document.getElementById("myCanvas"); 
-        //var pngimg = canvas.toDataURL('image/png').replace(/^.+,/, '');
-        //canvas.toBlob(function(blob) {
-            //saveAs(blob, tokenData.hash+'.png');
-        //var base64file = canvas.toDataURL("image/jpeg").split(';base64,')[1];
-        //var base64file = pngimg;
-        //var base64file = blob;
-        //console.log(base64file)
-        //var ext = "png";
         var attr = JSON.stringify(features).replace(/\"/g,"'")
-        //var filename=tokenData.hash+"."+ext;
         var url = 'https://upspirestudio.bubbleapps.io/version-test/api/1.1/wf/update-features';
         var xhr = new XMLHttpRequest();
         xhr.open("POST", url);
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.onreadystatechange = function () {if (xhr.readyState === 4) {console.log(xhr.status);console.log(xhr.responseText);}};
-        //var data64 = '{"attributes":"'+attr+'","url":"'+genurl+'","hash":"'+fxhash+'","img":{"filename":"'+ filename+'", "contents":"'+base64file+'"}}';
         var data64 = '{"attributes":"'+attr+'","url":"'+genurl+'","hash":"'+fxhash+'"}';
-        //var data64 = '{"url":"'+genurl+'","hash":"'+fxhash+'"}';
-        xhr.send(data64); 
-        //});    
+        xhr.send(data64);   
     };
