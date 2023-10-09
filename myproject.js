@@ -123,8 +123,8 @@ paper.view.viewSize.height = 2400;
 
 
 var colors = []; var palette = []; 
-var petalspiky = R.random_int(5, 15);
-
+var petalspiky = R.random_int(5, 12);
+console.log('spikeyness: '+petalspiky)
 
 numofcolors = R.random_int(1, 6);; //Sets the number of colors to pick for the pallete
 //numofcolors = $fx.getParam("number_colors");
@@ -188,7 +188,7 @@ rt = (wide+high)/3
 for (i=0;i<=numberofcircles;i++){
     cc[i]=new Point(~~(R.random_dec()*wide),~~(R.random_dec()*high));
     cr[i]=~~(rt/6+R.random_dec()*rt/2)-1;
-    hoset[i] =  R.random_int(10, 40)*ratio;
+    hoset[i] =  ~~(R.random_int(10, 40)*ratio);
 }
 
 //Pick layer colors from a random pallete based on tint library
@@ -302,7 +302,7 @@ for (z = 0; z < stacks; z++) {
 
 function petalPortal(z,curv){
     for (p=0;p<numberofcircles;p++){
-        var pp=pp+prange;   
+        var pp=pp+prange;
         var ocircle = new Path.Circle(cc[p], cr[p]);
         var icircle = new Path.Circle(cc[p], cr[p]-~~(15*ratio));
         sheet[z] = sheet[z].subtract(icircle);
@@ -316,10 +316,11 @@ function petalPortal(z,curv){
             sp=0;i=0;
             if (z%2 == 0){i=6};
             for (r=i; r<360; r=r+12){
-                var pr=pr+prange;
+                var pr=pr+prange; 
                 spike = new Path.Ellipse({
                 center: [cc[p].x+cr[p], cc[p].y],
-                radius: [~~((cr[p]/(stacks+4))*(stacks-z-1)), ~~(cr[p]/curv)],});
+                radius: [~~((cr[p]/(stacks+4))*(stacks-z-1)), ~~(cr[p]/(curv))],});
+
                 var offset = new Path.Circle(cc[p], cr[p]);
                 spire = spike.intersect(offset);
                 spike.remove();offset.remove();
