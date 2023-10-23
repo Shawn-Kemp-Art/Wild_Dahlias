@@ -123,6 +123,7 @@ paper.view.viewSize.height = 2400;
 
 
 var colors = []; var palette = []; 
+var woodframe = new Path();var framegap = new Path();
 var petalspiky = R.random_int(5, 12);
 console.log('spikeyness: '+petalspiky)
 
@@ -275,7 +276,7 @@ for (z = 0; z < stacks; z++) {
     //$fx.preview();
 
     
-
+    floatingframe();
     //send features to upspire.studio
     upspirestudio(features)
 
@@ -496,7 +497,28 @@ function horzWaveLines(z,ls,xinit,yinit,xamp,yamp) {
 
 
 //--------- Helper functions ----------------------- 
+function floatingframe(){
+   if (framegap.isEmpty()){
+        var outsideframe = new Path.Rectangle(new Point(0, 0),new Size(wide+24, high+24), framradius)
+        var insideframe = new Path.Rectangle(new Point(12, 12),new Size(wide, high)) 
+        framegap = outsideframe.subtract(insideframe);
+        outsideframe.remove();insideframe.remove();
+        framegap.scale(2.2);
+        framegap.position = new Point(paper.view.viewSize.width/2, paper.view.viewSize.height/2);
+        framegap.style = {fillColor: '#1A1A1A', strokeColor: "#1A1A1A", strokeWidth: 1*ratio};
+    } else {framegap.removeChildren()}
 
+    if (woodframe.isEmpty()){
+        var outsideframe = new Path.Rectangle(new Point(0, 0),new Size(wide+54, high+54), framradius)
+        var insideframe = new Path.Rectangle(new Point(21, 21),new Size(wide+12, high+12)) 
+        woodframe = outsideframe.subtract(insideframe);
+        outsideframe.remove();insideframe.remove();
+        woodframe.scale(2.2);
+        woodframe.position = new Point(paper.view.viewSize.width/2, paper.view.viewSize.height/2);
+        var framegroup = new Group(woodframe);
+        woodframe.style = {fillColor: '#60513D', strokeColor: "#60513D", strokeWidth: 1*ratio,shadowColor: new Color(0,0,0,[0.5]),shadowBlur: 20,shadowOffset: new Point(10*2.2, 10*2.2)};
+    } else {woodframe.removeChildren()}
+}
 
 
 function rangeInt(range,x,y,z){
@@ -618,6 +640,7 @@ document.addEventListener('keypress', (event) => {
 
        //Format for Lightburn
        if(event.key == "b") {
+        floatingframe();
             for (z=0;z<stacks;z++){
                 sheet[z].style = {fillColor: null,strokeWidth: .1,strokeColor: lightburn[stacks-z-1].Hex,shadowColor: null,shadowBlur: null,shadowOffset: null}
                 sheet[z].selected = true;}
