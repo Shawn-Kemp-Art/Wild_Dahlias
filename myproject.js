@@ -662,9 +662,6 @@ document.addEventListener('keypress', (event) => {
         //scale
        if(event.key == "1" || event.key =="2" ||event.key =="3" || event.key =="4") {
             setquery("scale",event.key);
-            setquery("w",5.6);
-            setquery("h",7);
-            setquery("cutmarks",1);
             location.reload();
             }
 
