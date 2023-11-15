@@ -124,6 +124,7 @@ paper.view.viewSize.height = 2400;
 
 var colors = []; var palette = []; 
 var woodframe = new Path();var framegap = new Path();
+var frameColor = "#60513D"
 var petalspiky = R.random_int(5, 12);
 console.log('spikeyness: '+petalspiky)
 
@@ -517,7 +518,7 @@ function floatingframe(){
         woodframe.scale(2.2);
         woodframe.position = new Point(paper.view.viewSize.width/2, paper.view.viewSize.height/2);
         var framegroup = new Group(woodframe);
-        woodframe.style = {fillColor: '#60513D', strokeColor: "#60513D", strokeWidth: 1*ratio,shadowColor: new Color(0,0,0,[0.5]),shadowBlur: 20,shadowOffset: new Point(10*2.2, 10*2.2)};
+        woodframe.style = {fillColor: frameColor, strokeColor: frameColor, strokeWidth: 1*ratio,shadowColor: new Color(0,0,0,[0.5]),shadowBlur: 20,shadowOffset: new Point(10*2.2, 10*2.2)};
     } else {woodframe.removeChildren()} 
 }
 
@@ -641,6 +642,16 @@ document.addEventListener('keypress', (event) => {
             link.href = url;
             link.click();
             }
+
+        if(event.key == "f") {
+            floatingframe();
+        }
+        
+        if(event.key == "F") {
+            floatingframe();
+            frameColor = prompt("Frame color(hex)", frameColor);
+            floatingframe();
+            }    
 
 
        //Format for Lightburn
